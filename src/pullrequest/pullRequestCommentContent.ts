@@ -80,7 +80,7 @@ function renderPending(mode: ModeText, committerMap: CommitterMap): string {
 
   if (input.suggestRecheck()) {
     text +=
-      '<sub>You can retrigger this bot by commenting **recheck** in this Pull Request. </sub>'
+      '<sub>Maintainers will be able to retrigger this bot by commenting **recheck** in this Pull Request. </sub>'
   }
 
   text += botSignature(mode)

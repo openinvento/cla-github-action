@@ -32673,7 +32673,9 @@ function renderPending(mode, committerMap) {
     const you = committersCount > 1 ? 'you all' : 'you';
     const introTemplate = input.getCustomNotSignedPrComment() ||
         `<br/>Thank you for your submission, we really appreciate it. Like many open-source projects, we ask that $you sign our [${mode.documentTitle}](${input.getPathToDocument()}) before we can accept your contribution. You can sign the ${mode.label} by just posting a Pull Request Comment same as the below format.<br/>`;
-    const intro = introTemplate.replace('$you', you);
+    const intro = introTemplate
+        .replace('$you', you)
+        .replace('$pathToCLADocument', input.getPathToDocument());
     const signPhrase = (0, pr_sign_comment_1.getPrSignComment)();
     let text = `${intro}
    - - -
@@ -32695,7 +32697,7 @@ function renderPending(mode, committerMap) {
     }
     if (input.suggestRecheck()) {
         text +=
-            '<sub>You can retrigger this bot by commenting **recheck** in this Pull Request. </sub>';
+            '<sub>Maintainers will be able to retrigger this bot by commenting **recheck** in this Pull Request. </sub>';
     }
     text += botSignature(mode);
     return text;
