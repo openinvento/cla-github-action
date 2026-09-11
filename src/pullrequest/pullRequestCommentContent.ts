@@ -33,9 +33,13 @@ export function commentContent(
 }
 
 function renderAllSigned(mode: ModeText): string {
-  const allSignedLine =
+  const allSignedTemplate =
     input.getCustomAllSignedPrComment() ||
-    `All contributors have signed the ${mode.label}  ✍️ ✅`
+    `All contributors have signed the ${mode.label}  ✅`
+
+  const allSignedLine = allSignedTemplate
+    .replace('$pathToCLADocument', input.getPathToDocument())
+
   return `${allSignedLine}<br/>${botSignature(mode)}`
 }
 

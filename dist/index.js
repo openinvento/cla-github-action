@@ -32666,8 +32666,10 @@ function commentContent(signed, committerMap) {
         : body;
 }
 function renderAllSigned(mode) {
-    const allSignedLine = input.getCustomAllSignedPrComment() ||
-        `All contributors have signed the ${mode.label}  ✍️ ✅`;
+    const allSignedTemplate = input.getCustomAllSignedPrComment() ||
+        `All contributors have signed the ${mode.label}  ✅`;
+    const allSignedLine = allSignedTemplate
+        .replace('$pathToCLADocument', input.getPathToDocument());
     return `${allSignedLine}<br/>${botSignature(mode)}`;
 }
 function renderPending(mode, committerMap) {
