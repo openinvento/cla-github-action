@@ -47,7 +47,10 @@ function renderPending(mode: ModeText, committerMap: CommitterMap): string {
   const introTemplate =
     input.getCustomNotSignedPrComment() ||
     `<br/>Thank you for your submission, we really appreciate it. Like many open-source projects, we ask that $you sign our [${mode.documentTitle}](${input.getPathToDocument()}) before we can accept your contribution. You can sign the ${mode.label} by just posting a Pull Request Comment same as the below format.<br/>`
-  const intro = introTemplate.replace('$you', you)
+
+  const intro = introTemplate
+    .replace('$you', you)
+    .replace('$pathToCLADocument', input.getPathToDocument())
 
   const signPhrase = getPrSignComment()
 
@@ -59,12 +62,15 @@ function renderPending(mode: ModeText, committerMap: CommitterMap): string {
 
   if (committersCount > 1) {
     text += `**${committerMap.signed.length}** out of **${committerMap.signed.length + committerMap.notSigned.length}** committers have signed the ${mode.label}.`
+
     for (const s of committerMap.signed) {
       text += `<br/>:white_check_mark: [${s.name}](https://github.com/${s.name})`
     }
+
     for (const u of committerMap.notSigned) {
       text += `<br/>:x: @${u.name}`
     }
+
     text += '<br/>'
   }
 
