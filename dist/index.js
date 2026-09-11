@@ -32292,11 +32292,13 @@ function updateFile(sha, claFileContent, reactedCommitters) {
     return __awaiter(this, void 0, void 0, function* () {
         const t = resolveSignaturesTarget();
         const pullRequestNo = github_1.context.issue.number;
+        const allSignedContributors = [
+            ...claFileContent.signedContributors,
+            ...reactedCommitters.newSigned
+        ];
+        const uniqueSignedContributors = allSignedContributors.filter((contributor, index, contributors) => contributors.findIndex(existing => existing.id === contributor.id) === index);
         const updated = {
-            signedContributors: [
-                ...claFileContent.signedContributors,
-                ...reactedCommitters.newSigned
-            ]
+            signedContributors: uniqueSignedContributors
         };
         const contentBinary = Buffer.from(JSON.stringify(updated, null, 2)).toString('base64');
         yield t.octokit.rest.repos.createOrUpdateFileContents({
@@ -32936,7 +32938,9 @@ function signatureWithPRComment(committerMap, committers) {
         /*
          *checking if the reacted committers are not the signed committers(not in the storage file) and filtering only the unsigned committers
          */
-        const newSigned = filteredListOfPRComments.filter(commentedCommitter => committerMap.notSigned.some(notSignedCommitter => commentedCommitter.id === notSignedCommitter.id));
+        const newSigned = filteredListOfPRComments
+            .filter(commentedCommitter => committerMap.notSigned.some(notSignedCommitter => commentedCommitter.id === notSignedCommitter.id))
+            .filter((comment, index, comments) => comments.findIndex(existing => existing.id === comment.id) === index);
         /*
          * checking if the commented users are only the contributors who has committed in the same PR (This is needed for the PR Comment and changing the status to success when all the contributors has reacted to the PR)
          */

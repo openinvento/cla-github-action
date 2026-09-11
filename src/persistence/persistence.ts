@@ -56,12 +56,20 @@ export async function updateFile(
   const t = resolveSignaturesTarget()
   const pullRequestNo = context.issue.number
 
+  const allSignedContributors = [
+    ...claFileContent.signedContributors,
+    ...reactedCommitters.newSigned
+  ]
+
+  const uniqueSignedContributors = allSignedContributors.filter(
+    (contributor, index, contributors) =>
+      contributors.findIndex(existing => existing.id === contributor.id) === index
+  )
+
   const updated: ClaFileContent = {
-    signedContributors: [
-      ...claFileContent.signedContributors,
-      ...reactedCommitters.newSigned
-    ]
+    signedContributors: uniqueSignedContributors
   }
+  
   const contentBinary = Buffer.from(JSON.stringify(updated, null, 2)).toString(
     'base64'
   )
