@@ -84,7 +84,7 @@ function renderPending(mode: ModeText, committerMap: CommitterMap): string {
 
   if (input.suggestRecheck()) {
     text +=
-      '<sub>Maintainers will be able to retrigger this bot by commenting **recheck** in this Pull Request and/ or **re-run the failed workflow** in the Github UI. </sub>'
+      '<sub>Maintainers will be able to retrigger this bot by **re-run the failed workflow** in the Github UI (or by commenting "recheck" which is currently unstable).</sub>'
   }
 
   text += botSignature(mode)
